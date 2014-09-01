@@ -2,7 +2,8 @@ package com.zeta.engine.graphics;
 
 import java.util.Arrays;
 
-import com.zeta.engine.Font;
+import com.zeta.engine.fonts.Font;
+import com.zeta.engine.fonts.FontChar;
 
 public class Graphics {
 
@@ -12,10 +13,12 @@ public class Graphics {
 	
 	private final Bitmap bitmap;
 	private final int[] pixelData;
+	private Font font;
 	
 	public Graphics(Bitmap bitmap, int[] pixelData) {
 		this.bitmap = bitmap;
 		this.pixelData = pixelData;
+		font = Font.ARIAL;
 	}
 	
 	public int[] getPixelData() {
@@ -32,6 +35,10 @@ public class Graphics {
 	
 	public void drawPixel(int x, int y, int color) {
 		pixelData[y * bitmap.getWidth() + x] = color;
+	}
+	
+	public void setFont(Font font) {
+		this.font = font;
 	}
 	
 	public void drawRect(int x, int y, int width, int height, int color) {
@@ -98,7 +105,6 @@ public class Graphics {
 				
 	}
 
-
 	private void renderBitmapNoTransparancy(int xStart, int yStart, int xEnd, int yEnd, 
 											int xStartImage, int yStartImage,
 											Bitmap bitmap) {
@@ -130,13 +136,53 @@ public class Graphics {
 		
 	}
 	
-	public void drawString(int x, int y, Font font, String text) {
+	public void drawString(int x, int y, int color, String text) {
+
+		int xCursor = x;
+		int yCursor = y;
+		
+		// loop through all characters
 		for (int i = 0; i < text.length(); i++) {
 			
-			Bitmap character = font.getChar((int)text.charAt(i));
-			drawBitmap(x, y, character);
+			char c = text.charAt(i);
+			if (c == '\n') {
+				
+				yCursor += font.getLineHeight();
+				xCursor = x;
+				
+			} else {
 			
-			x += character.getWidth();
+				FontChar fontChar = font.getChar((int)text.charAt(i));
+				int xRender = xCursor + fontChar.xOffset;
+				int yRender = yCursor + fontChar.yOffset;
+				renderChar(xRender, yRender, color, fontChar.bitmap);
+				
+				xCursor += fontChar.xAdvance;
+			}
+			
+		}
+		
+	}
+	
+	private void renderChar(int x, int y, int color, Bitmap bitmap) {
+		
+		//TODO: add clipping, and proper rendering	
+		for (int i = 0; i < bitmap.getHeight(); i++) {
+			
+			int yPix = i + y;
+			if (yPix < 0 || yPix >= this.bitmap.getHeight()) continue;
+			
+			for (int j = 0; j < bitmap.getWidth(); j++) {
+				
+				int xPix = j + x;
+				if (xPix < 0 || xPix >= this.bitmap.getWidth()) continue;
+				
+				int src = bitmap.getPixel(j, i);
+				if (src == 0xffffffff) {
+					drawPixel(j+x, i+y, color);
+				}
+				
+			}
 			
 		}
 		
