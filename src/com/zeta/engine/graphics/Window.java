@@ -5,15 +5,15 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
-import com.zeta.engine.Game;
+import com.zeta.engine.WindowedGame;
 
 public class Window {
 
 	private final JFrame frame;
 	private final Screen screen;
-	private final Game game;
+	private final WindowedGame game;
 	
-	public Window(Game game, Screen screen, String title) {
+	public Window(WindowedGame game, Screen screen, String title) {
 		this.screen = screen;
 		this.game = game;
 		

@@ -1,17 +1,15 @@
 import java.awt.event.KeyEvent;
 
-import com.zeta.engine.Game;
+import com.zeta.engine.Input;
+import com.zeta.engine.WindowedGame;
 import com.zeta.engine.graphics.RenderContext;
-import com.zeta.engine.graphics.Screen;
 import com.zeta.engine.graphics.Texture;
-import com.zeta.engine.graphics.Window;
-import com.zeta.engine.input.Keyboard;
 
-public class TestGame extends Game {
+public class TestGame extends WindowedGame {
 	
-	private final Screen screen;
-	private final Window window;
-	private final Keyboard keyboard;
+	public static final int WIDTH = 800, HEIGHT = 600, SCALE = 2;
+	public static final String TITLE = "Zeta Engine v0.2";
+	
 	private final RenderContext ctx;
 	
 	double x = 0.0, y = 0.0;
@@ -19,33 +17,27 @@ public class TestGame extends Game {
 	Texture test;
 	
 	public TestGame() {
-	
-		screen = new Screen(800, 600, 2);
-		window = new Window(this, screen, "Zeta Engine v0.1");
-		keyboard = new Keyboard(screen);
-		
+		super(WIDTH, HEIGHT, SCALE, TITLE);
 		ctx = screen.getRenderContext();
-		
 	}
 
 	@Override
 	protected void init() {
 		window.show();
 		test = Texture.load("res/test2.png");
-		System.out.println(Integer.toHexString(test.getPixelData()[0]));
 	}
 
 	@Override
 	protected void update(double dt) {
-		if (keyboard.keyDown(KeyEvent.VK_D)) {
+		if (Input.keyDown(KeyEvent.VK_D)) {
 			x += speed * dt;
-		} else if (keyboard.keyDown(KeyEvent.VK_A)) {
+		} else if (Input.keyDown(KeyEvent.VK_A)) {
 			x -= speed * dt;
 		}
 		
-		if (keyboard.keyDown(KeyEvent.VK_S)) {
+		if (Input.keyDown(KeyEvent.VK_S)) {
 			y += speed * dt;
-		} else if (keyboard.keyDown(KeyEvent.VK_W)) {
+		} else if (Input.keyDown(KeyEvent.VK_W)) {
 			y -= speed * dt;
 		}
 	}

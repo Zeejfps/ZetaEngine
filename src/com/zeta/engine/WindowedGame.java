@@ -1,11 +1,23 @@
 package com.zeta.engine;
 
-public abstract class Game {
+import com.zeta.engine.graphics.Screen;
+import com.zeta.engine.graphics.Window;
+
+public abstract class WindowedGame {
 
 	private volatile boolean running = false;
 	private final GameThread gameThread = new GameThread();
 	
-	public Game() {
+	protected final Screen screen;
+	protected final Window window;
+	
+	public WindowedGame(int width, int height, int scale, String title) {
+		
+		screen = new Screen(width, height, scale);
+		window = new Window(this, screen, title);
+		
+		Input.create(screen);
+		
 	}
 	
 	public void launch() {
