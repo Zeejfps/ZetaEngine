@@ -58,6 +58,10 @@ public class Graphics {
 	}
 	
 	public void drawBitmap(int x, int y, Bitmap bitmap) {
+		drawBitmap(x, y, bitmap, Graphics.TRANSPERANCY_LOW);
+	}
+	
+	public void drawBitmap(int x, int y, Bitmap bitmap, int transperancy) {
 		
 		int xStart = x;
 		int xStartImage = 0;
@@ -74,90 +78,55 @@ public class Graphics {
 		}
 		
 		int xEnd = x + bitmap.getWidth() >= this.bitmap.getWidth() ? this.getBitmap().getWidth() - 1 : x + bitmap.getWidth()-1;
-		System.out.println(xEnd - xStart);
 		int yEnd = y + bitmap.getHeight() >= this.bitmap.getHeight() ? this.getBitmap().getHeight() - 1 : y + bitmap.getHeight()-1;
-		
-		renderBitmapNoTransparancy(xStart, yStart, xEnd, yEnd, xStartImage, yStartImage, bitmap);
-		
-		//drawBitmap(x, y, bitmap, TRANSPERANCY_LOW);
-	}
-	
-	public void drawBitmap(int x, int y, Bitmap bitmap, int transperancy) {
 		
 		switch (transperancy) {
 		
 		case TRANSPERANCY_LOW:
-			drawBitmapLowTransparancy(x, y, bitmap);
+			renderBitmapLowTransparancy(xStart, yStart, xEnd, yEnd, xStartImage, yStartImage, bitmap);
 			break;
 			
 		case TRANSPERANCY_HIGH:
-			drawBitmapNoTransparancy(x, y, bitmap);
+			renderBitmapLowTransparancy(xStart, yStart, xEnd, yEnd, xStartImage, yStartImage, bitmap);
 			break;
 		
 		default:
-			drawBitmapNoTransparancy(x, y, bitmap);
+			renderBitmapNoTransparancy(xStart, yStart, xEnd, yEnd, xStartImage, yStartImage, bitmap);
 			break;
 		
 		}
 				
 	}
-	
-	private void drawBitmapNoTransparancy(int x, int y, Bitmap bitmap) {
-		for (int i = 0; i < bitmap.getHeight(); i ++) {
-			
-			int yPix = i + y;
-			if (yPix < 0 || yPix >= this.bitmap.getHeight()) continue;
-			
-			for (int j = 0; j < bitmap.getWidth(); j++) {
-				
-				int xPix = j + x;
-				if (xPix < 0 || xPix >= this.bitmap.getWidth()) continue;
-				
-				int src = bitmap.getPixel(j, i);
-				if (src == 0){
-					drawPixel(xPix, yPix, 0xffffff);
-				} else {
-					drawPixel(xPix, yPix, src);
-				}
 
-			}
-			
-		}
-		
-	}
 
 	private void renderBitmapNoTransparancy(int xStart, int yStart, int xEnd, int yEnd, 
 											int xStartImage, int yStartImage,
 											Bitmap bitmap) {
+		
 		for (int y = yStart, yImage = yStartImage; y <= yEnd; y ++, yImage++) {
 			
 			for (int x = xStart, xImage = xStartImage; x <= xEnd; x++, xImage++) {
-				drawPixel(x, y, bitmap.getPixel(xImage, yImage));
+				int src = bitmap.getPixel(xImage, yImage);
+				if (src == 0) src = 0xffffffff;
+				drawPixel(x, y, src);
 			}
 			
 		}
 		
 	}
 	
-	private void drawBitmapLowTransparancy(int x, int y, Bitmap bitmap) {
-		for (int i = 0; i < bitmap.getHeight(); i ++) {
+	private void renderBitmapLowTransparancy(int xStart, int yStart, int xEnd, int yEnd, 
+											 int xStartImage, int yStartImage,
+											 Bitmap bitmap) {
+		
+		for (int y = yStart, yImage = yStartImage; y <= yEnd; y ++, yImage++) {
 			
-			int yPix = i + y;
-			if (yPix < 0 || yPix >= this.bitmap.getHeight()) continue;
-			
-			for (int j = 0; j < bitmap.getWidth(); j++) {
-				
-				int xPix = j + x;
-				if (xPix < 0 || xPix >= this.bitmap.getWidth()) continue;
-				
-				int src = bitmap.getPixel(j, i);
-				if (src != 0){
-					drawPixel(xPix, yPix, src);
-				}
-
+			for (int x = xStart, xImage = xStartImage; x <= xEnd; x++, xImage++) {
+				int src = bitmap.getPixel(xImage, yImage);
+				if (src != 0) drawPixel(x, y, src);
 			}
 			
-		}
+		}		
 		
 	}
 	
