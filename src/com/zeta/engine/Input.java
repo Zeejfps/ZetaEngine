@@ -1,9 +1,8 @@
 package com.zeta.engine;
 
+import java.awt.Canvas;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-
-import com.zeta.engine.graphics.Screen;
 
 public final class Input {
 
@@ -13,26 +12,26 @@ public final class Input {
 	private final Listener listener;
 	private final boolean[] down;
 	
-	private Input(Screen screen) {
+	private Input(Canvas canvas) {
 		
 		down = new boolean[MAX_KEYS];
 		listener = new Listener();
-		screen.getCanvas().addKeyListener(listener);
+		canvas.addKeyListener(listener);
 		
 	}
 	
-	public static boolean keyDown(int keyCode) {
+	public static boolean isKeyDown(int keyCode) {
 		return input.down[keyCode];
 	}
 	
-	public static boolean keyReleased(int keyCode) {
+	public static boolean isKeyReleased(int keyCode) {
 		return !input.down[keyCode];
 	}
 
-	public static void create(Screen screen) {
+	public static void create(Canvas canvas) {
 		
 		if (input == null) {
-			input = new Input(screen);
+			input = new Input(canvas);
 		}
 		
 	}

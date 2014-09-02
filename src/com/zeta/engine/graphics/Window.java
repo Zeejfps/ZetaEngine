@@ -5,22 +5,22 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
-import com.zeta.engine.WindowedGame;
+import com.zeta.engine.Game;
 
-public class Window {
+public final class Window {
 
-	private final JFrame frame;
-	private final Screen screen;
-	private final WindowedGame game;
+	private static Window window;
 	
-	public Window(WindowedGame game, Screen screen, String title) {
-		this.screen = screen;
+	private final JFrame frame;
+	private final Game game;
+	
+	private Window(Game game, String title) {
 		this.game = game;
 		
 		frame = new JFrame(title);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
-		frame.add(screen.getCanvas());
+		frame.add(Screen.getCanvas());
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.addWindowListener(new WindowAdapter() {
@@ -39,28 +39,31 @@ public class Window {
 		
 	}
 	
-	public void show() {
-		frame.setVisible(true);
+	public static void show() {
+		window.frame.setVisible(true);
 	}
 	
-	public void setTitle(String title) {
-		frame.setTitle(title);
+	public static void setTitle(String title) {
+		window.frame.setTitle(title);
 	}
 	
-	public Screen getScreen() {
-		return screen;
+	public static String getTitle() {
+		return window.frame.getTitle();
 	}
 	
-	public String getTitle() {
-		return frame.getTitle();
+	public static int getWidth() {
+		return window.frame.getWidth();
 	}
 	
-	public int getWidth() {
-		return frame.getWidth();
+	public static int getHeight() {
+		return window.frame.getHeight();
 	}
 	
-	public int getHeight() {
-		return frame.getHeight();
+	public static void create(Game game, String title) {
+		if (window == null) {
+			window = new Window(game, title);
+		}
+		
 	}
 	
 }
