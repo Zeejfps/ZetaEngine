@@ -36,10 +36,10 @@ public class SnakeGame extends WindowedGame {
 
 	@Override
 	protected void render() {
-		Screen.clear(0xff00ff);
-		Screen.drawRect(0, 0, 20, 30, 0x00ffff);
-		Screen.drawRect((int)x, (int)y, 50, 50, 0xff0000);
-		Screen.swapBuffers();
+		screen.clear(0xff00ff);
+		renderer.drawRect(0, 0, 20, 30, 0x00ffff);
+		renderer.drawRect((int)x, (int)y, 50, 50, 0xff0000);
+		screen.swapBuffers();
 	}
 
 	public static void main(String[] args) {

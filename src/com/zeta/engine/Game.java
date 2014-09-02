@@ -1,5 +1,6 @@
 package com.zeta.engine;
 
+import com.zeta.engine.graphics.Renderer;
 import com.zeta.engine.graphics.Screen;
 
 public abstract class Game {
@@ -7,10 +8,15 @@ public abstract class Game {
 	private volatile boolean running = false;
 	private final GameThread gameThread = new GameThread();
 	
+	protected final Screen screen;
+	protected final Renderer renderer;
+	
 	public Game(int width, int height, int scale) {
 		
-		Screen.create(width, height, scale);
-		Input.create(Screen.getCanvas());
+		screen = new Screen(width, height, scale);
+		renderer = new Renderer(screen.getBitmap());
+		
+		Input.create(screen.getCanvas());
 
 	}
 	
@@ -25,6 +31,10 @@ public abstract class Game {
 		if (running) {
 			running = false;
 		}
+	}
+	
+	public Screen getScreen() {
+		return screen;
 	}
 	
 	protected abstract void init();

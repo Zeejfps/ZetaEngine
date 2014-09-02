@@ -12,14 +12,13 @@ import java.util.Arrays;
 
 public final class Screen {
 
-	private static Screen screen;
-	
 	private final Canvas canvas;
 	private final int width, height, scale;
 	private final BufferedImage buffer;
 	private final int[] screenPixelData;
+	private final Bitmap bitmap;
 	
-	private Screen(int width, int height, int scale) {
+	public Screen(int width, int height, int scale) {
 		
 		this.width = width / scale;
 		this.height = height / scale;
@@ -28,32 +27,34 @@ public final class Screen {
 		buffer = new BufferedImage(width / scale, height / scale, BufferedImage.TYPE_INT_RGB);
 		screenPixelData = ((DataBufferInt)buffer.getRaster().getDataBuffer()).getData();
 		
+		bitmap = new Bitmap(this.width, this.height, screenPixelData);
+		
 		canvas = new Canvas();
 		canvas.setPreferredSize(new Dimension(width, height));
 		canvas.setBackground(Color.BLACK);
 		canvas.setFocusable(true);
 	}
 	
-	public static void clear(int color) {
-		Arrays.fill(screen.screenPixelData, color);
+	public void clear(int color) {
+		Arrays.fill(screenPixelData, color);
 	}
 	
-	public static void clear() {
+	public void clear() {
 		clear(0);
 	}
 	
-	public static void swapBuffers() {
+	public void swapBuffers() {
 		
-		if (screen.canvas.isDisplayable()) {
+		if (canvas.isDisplayable()) {
 			
-			BufferStrategy bs = screen.canvas.getBufferStrategy();
+			BufferStrategy bs = canvas.getBufferStrategy();
 			if (bs == null) {
-				screen.canvas.createBufferStrategy(2);
+				canvas.createBufferStrategy(2);
 				return;
 			}
 			
 			Graphics g = bs.getDrawGraphics();
-			g.drawImage(screen.buffer, 0, 0, screen.canvas.getWidth(), screen.canvas.getHeight(), null);
+			g.drawImage(buffer, 0, 0, canvas.getWidth(), canvas.getHeight(), null);
 			g.dispose();
 			
 			bs.show();
@@ -63,68 +64,24 @@ public final class Screen {
 		
 	}
 	
-	public static void drawRect(int x, int y, int width, int height, int color) {
-		
-		for (int i = 0; i < height; i ++) {
-	
-			int yPix = i + y;
-			if (yPix < 0 || yPix >= screen.height) continue;
-			
-			for (int j = 0; j < width; j++) {
-				
-				int xPix = j + x;
-				if (xPix < 0 || xPix >= screen.width) continue;
-				
-				screen.screenPixelData[yPix * screen.width + xPix] = color;
-				
-			}
-			
-		}
-		
+	public Bitmap getBitmap() {
+		return bitmap;
 	}
 	
-	public static void drawTexture(int x, int y, Texture texture) {
-		
-		for (int i = 0; i < texture.getHeight(); i ++) {
-			
-			int yPix = i + y;
-			if (yPix < 0 || yPix >= screen.height) continue;
-			
-			for (int j = 0; j < texture.getWidth(); j++) {
-				
-				int xPix = j + x;
-				if (xPix < 0 || xPix >= screen.width) continue;
-				
-				screen.screenPixelData[yPix * screen.width + xPix] = texture.getPixelData()[i * texture.getWidth() + j];
-				
-			}
-			
-		}
-		
+	public Canvas getCanvas() {
+		return canvas;
 	}
 	
-	public static Canvas getCanvas() {
-		return screen.canvas;
+	public int getWidth() {
+		return width;
 	}
 	
-	public static int getWidth() {
-		return screen.width;
+	public int getHeight() {
+		return height;
 	}
 	
-	public static int getHeight() {
-		return screen.height;
-	}
-	
-	public static int getScale() {
-		return screen.scale;
-	}
-	
-	public static void create(int width, int height, int scale) {
-		
-		if (screen == null) {
-			screen = new Screen(width, height, scale);
-		}
-		
+	public int getScale() {
+		return scale;
 	}
 	
 }

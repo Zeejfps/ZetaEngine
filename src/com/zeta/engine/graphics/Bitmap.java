@@ -8,12 +8,12 @@ import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 
-public class Texture {
+public class Bitmap {
 
 	private final int width, height;
 	private final int[] pixelData;
 	
-	private Texture(int width, int height, int[] pixelData) {
+	public Bitmap(int width, int height, int[] pixelData) {
 		this.width = width;
 		this.height = height;
 		this.pixelData = pixelData;
@@ -31,11 +31,11 @@ public class Texture {
 		return height;
 	}
 	
-	public static Texture load(String path) {
+	public static Bitmap load(String path) {
 		return load(new File(path));
 	}
 	
-	public static Texture load(File file) {
+	public static Bitmap load(File file) {
 		
 		int width, height;
 		int[] pixelData;
@@ -58,11 +58,11 @@ public class Texture {
 			pixelData = new int[0];
 		}
 		
-		return new Texture(width, height, pixelData);
+		return new Bitmap(width, height, pixelData);
 		
 	}
 	
-	public static Texture load(URL url) {
+	public static Bitmap load(URL url) {
 		
 		int width, height;
 		int[] pixelData;
@@ -86,7 +86,7 @@ public class Texture {
 			Arrays.fill(pixelData, 0xff00ff);
 		}
 		
-		return new Texture(width, height, pixelData);
+		return new Bitmap(width, height, pixelData);
 	}
 	
 }
