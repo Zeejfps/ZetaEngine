@@ -54,10 +54,6 @@ public final class Screen {
 		
 	}
 	
-	public com.zeta.engine.graphics.Graphics getGraphics() {
-		return screenBitmap.getGraphics();
-	}
-	
 	public Bitmap getBitmap() {
 		return screenBitmap;
 	}

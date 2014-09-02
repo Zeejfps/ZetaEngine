@@ -19,7 +19,11 @@ public class Bitmap {
 		this.height = height;
 		this.pixelData = pixelData;
 		
-		graphics = new Graphics(this);
+		graphics = new Graphics(this, pixelData);
+	}
+	
+	public Bitmap(int width, int height) {
+		this(width, height, new int[width * height]);
 	}
 	
 	public int getPixel(int x, int y) {
@@ -32,10 +36,6 @@ public class Bitmap {
 	
 	public Graphics getGraphics() {
 		return graphics;
-	}
-	
-	public int[] getPixelData() {
-		return pixelData;
 	}
 	
 	public int getWidth() {

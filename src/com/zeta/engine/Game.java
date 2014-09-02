@@ -49,8 +49,8 @@ public abstract class Game {
 			double previous = System.nanoTime();
 			double lag = 0.0;
 			
+			Graphics g = screen.getBitmap().getGraphics();
 			init();
-			Graphics g = screen.getGraphics();
 			while(running) {
 				
 				double nsPerUpdate = NS_PER_SEC / 60.0;
