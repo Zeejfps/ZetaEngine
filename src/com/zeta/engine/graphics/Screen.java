@@ -8,15 +8,13 @@ import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.util.Arrays;
 
 public final class Screen {
 
 	private final Canvas canvas;
 	private final int width, height, scale;
-	private final BufferedImage buffer;
-	private final int[] screenPixelData;
-	private final Bitmap bitmap;
+	private final BufferedImage screenBuffer;
+	private final Bitmap screenBitmap;
 	
 	public Screen(int width, int height, int scale) {
 		
@@ -24,25 +22,17 @@ public final class Screen {
 		this.height = height / scale;
 		this.scale = scale;
 		
-		buffer = new BufferedImage(width / scale, height / scale, BufferedImage.TYPE_INT_RGB);
-		screenPixelData = ((DataBufferInt)buffer.getRaster().getDataBuffer()).getData();
+		screenBuffer = new BufferedImage(width / scale, height / scale, BufferedImage.TYPE_INT_RGB);
+		int[] screenPixelData = ((DataBufferInt)screenBuffer.getRaster().getDataBuffer()).getData();
 		
-		bitmap = new Bitmap(this.width, this.height, screenPixelData);
+		screenBitmap = new Bitmap(this.width, this.height, screenPixelData);
 		
 		canvas = new Canvas();
 		canvas.setPreferredSize(new Dimension(width, height));
 		canvas.setBackground(Color.BLACK);
 		canvas.setFocusable(true);
 	}
-	
-	public void clear(int color) {
-		Arrays.fill(screenPixelData, color);
-	}
-	
-	public void clear() {
-		clear(0);
-	}
-	
+		
 	public void swapBuffers() {
 		
 		if (canvas.isDisplayable()) {
@@ -54,7 +44,7 @@ public final class Screen {
 			}
 			
 			Graphics g = bs.getDrawGraphics();
-			g.drawImage(buffer, 0, 0, canvas.getWidth(), canvas.getHeight(), null);
+			g.drawImage(screenBuffer, 0, 0, canvas.getWidth(), canvas.getHeight(), null);
 			g.dispose();
 			
 			bs.show();
@@ -64,8 +54,12 @@ public final class Screen {
 		
 	}
 	
+	public com.zeta.engine.graphics.Graphics getGraphics() {
+		return screenBitmap.getGraphics();
+	}
+	
 	public Bitmap getBitmap() {
-		return bitmap;
+		return screenBitmap;
 	}
 	
 	public Canvas getCanvas() {

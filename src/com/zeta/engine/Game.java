@@ -1,6 +1,6 @@
 package com.zeta.engine;
 
-import com.zeta.engine.graphics.Renderer;
+import com.zeta.engine.graphics.Graphics;
 import com.zeta.engine.graphics.Screen;
 
 public abstract class Game {
@@ -9,15 +9,10 @@ public abstract class Game {
 	private final GameThread gameThread = new GameThread();
 	
 	protected final Screen screen;
-	protected final Renderer renderer;
 	
 	public Game(int width, int height, int scale) {
-		
 		screen = new Screen(width, height, scale);
-		renderer = new Renderer(screen.getBitmap());
-		
 		Input.create(screen.getCanvas());
-
 	}
 	
 	public void launch() {
@@ -41,7 +36,7 @@ public abstract class Game {
 	
 	protected abstract void update();
 	
-	protected abstract void render();
+	protected abstract void render(Graphics g);
 	
 	private class GameThread extends Thread {
 		
@@ -55,6 +50,7 @@ public abstract class Game {
 			double lag = 0.0;
 			
 			init();
+			Graphics g = screen.getGraphics();
 			while(running) {
 				
 				double nsPerUpdate = NS_PER_SEC / 60.0;
@@ -72,7 +68,7 @@ public abstract class Game {
 					lag -= nsPerUpdate;
 				}
 
-				render();
+				render(g);
 				frames++;
 				
 				if (System.currentTimeMillis() - debugTime >= 1000) {

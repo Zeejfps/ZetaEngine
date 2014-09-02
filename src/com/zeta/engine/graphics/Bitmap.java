@@ -12,11 +12,26 @@ public class Bitmap {
 
 	private final int width, height;
 	private final int[] pixelData;
+	private final Graphics graphics;
 	
 	public Bitmap(int width, int height, int[] pixelData) {
 		this.width = width;
 		this.height = height;
 		this.pixelData = pixelData;
+		
+		graphics = new Graphics(this);
+	}
+	
+	public int getPixel(int x, int y) {
+		return getPixel(y * width + x);
+	}
+	
+	public int getPixel(int index) {
+		return pixelData[index];
+	}
+	
+	public Graphics getGraphics() {
+		return graphics;
 	}
 	
 	public int[] getPixelData() {

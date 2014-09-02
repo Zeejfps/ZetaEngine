@@ -4,7 +4,8 @@ import java.awt.event.KeyEvent;
 
 import com.zeta.engine.Input;
 import com.zeta.engine.WindowedGame;
-import com.zeta.engine.graphics.Screen;
+import com.zeta.engine.graphics.Bitmap;
+import com.zeta.engine.graphics.Graphics;
 
 public class SnakeGame extends WindowedGame {
 	
@@ -12,6 +13,7 @@ public class SnakeGame extends WindowedGame {
 	public static final String TITLE = "Zeta Engine v0.3";
 	
 	double x = 0.0, y = 0.0;
+	Bitmap testMap = Bitmap.load("res/test2.png");
 	
 	public SnakeGame() {
 		super(WIDTH, HEIGHT, SCALE, TITLE);
@@ -35,16 +37,19 @@ public class SnakeGame extends WindowedGame {
 	}
 
 	@Override
-	protected void render() {
-		screen.clear(0xff00ff);
-		renderer.drawRect(0, 0, 20, 30, 0x00ffff);
-		renderer.drawRect((int)x, (int)y, 50, 50, 0xff0000);
+	protected void render(Graphics g) {
+		g.fill(0xff00ff);
+		g.drawRect(0, 0, 20, 30, 0x00ffff);
+		
+		testMap.getGraphics().drawPixel(10, 10, 0x0000ff);
+		
+		g.drawBitmap((int)x, (int)y, testMap);
 		screen.swapBuffers();
 	}
 
 	public static void main(String[] args) {
 		
-		SnakeGame game = new SnakeGame();
+		WindowedGame game = new SnakeGame();
 		game.launch();
 		
 	}
