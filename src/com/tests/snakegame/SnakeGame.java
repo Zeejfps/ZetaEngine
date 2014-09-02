@@ -17,6 +17,8 @@ public class SnakeGame extends WindowedGame {
 	Bitmap testMap = Bitmap.load("res/test3.png");
 	Bitmap randomMap = new Bitmap(50, 50);
 	
+	Snake snake = new Snake();
+	
 	public SnakeGame() {
 		super(WIDTH, HEIGHT, SCALE, TITLE);
 		Random r = new Random();
@@ -26,6 +28,7 @@ public class SnakeGame extends WindowedGame {
 				randomMap.getGraphics().drawPixel(j, i, r.nextInt());
 			}
 		}
+		setMaxUps(5);
 		
 	}
 
@@ -44,6 +47,8 @@ public class SnakeGame extends WindowedGame {
 			x--;
 		}
 		
+		snake.update();
+		
 	}
 
 	@Override
@@ -53,6 +58,8 @@ public class SnakeGame extends WindowedGame {
 		testMap.getGraphics().drawPixel(10, 10, 0x0000ff);
 		g.drawBitmap((int)x, (int)y, testMap);
 		g.drawBitmap(10, 50, randomMap);
+		
+		snake.render(g);
 		
 		screen.swapBuffers();
 	}

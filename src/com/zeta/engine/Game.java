@@ -7,6 +7,7 @@ public abstract class Game {
 
 	private volatile boolean running = false;
 	private final GameThread gameThread = new GameThread();
+	private int maxUps = 60;
 	
 	protected final Screen screen;
 	
@@ -26,6 +27,10 @@ public abstract class Game {
 		if (running) {
 			running = false;
 		}
+	}
+	
+	public void setMaxUps(int maxUps) {
+		this.maxUps = maxUps >= 0 ? maxUps : 60;
 	}
 	
 	public Screen getScreen() {
@@ -53,7 +58,7 @@ public abstract class Game {
 			init();
 			while(running) {
 				
-				double nsPerUpdate = NS_PER_SEC / 60.0;
+				double nsPerUpdate = NS_PER_SEC / maxUps;
 	
 				double current = System.nanoTime();
 				double elapsed = current - previous;
