@@ -28,7 +28,12 @@ public class SnakeGame extends WindowedGame {
 				randomMap.getGraphics().drawPixel(j, i, r.nextInt());
 			}
 		}
-		setMaxUps(5);
+		//setMaxUps(5);
+		
+		String test = "ABCD";
+		for (int i = 0; i < test.length(); i++) {
+			System.out.println((int)test.charAt(i));
+		}
 		
 	}
 
@@ -56,8 +61,8 @@ public class SnakeGame extends WindowedGame {
 		g.fill(0);
 		g.drawRect(0, 0, 20, 30, 0x0000ff);
 		testMap.getGraphics().drawPixel(10, 10, 0x0000ff);
-		g.drawBitmap((int)x, (int)y, testMap);
-		g.drawBitmap(10, 50, randomMap);
+		//g.drawBitmap(60, 60, testMap);
+		g.drawBitmap(0, 0, randomMap);
 		
 		snake.render(g);
 		

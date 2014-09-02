@@ -2,6 +2,8 @@ package com.zeta.engine.graphics;
 
 import java.util.Arrays;
 
+import com.zeta.engine.Font;
+
 public class Graphics {
 
 	public static final int TRANSPERANCY_NONE = 0;
@@ -34,17 +36,21 @@ public class Graphics {
 	
 	public void drawRect(int x, int y, int width, int height, int color) {
 		
-		for (int i = 0; i < height; i ++) {
+		int xStart = x < 0 ? 0 : x;
+		int xEnd = x + width >= bitmap.getWidth() ? bitmap.getWidth()-1 : x + width;
+		
+		int yStart = y < 0 ? 0 : y;
+		int yEnd = y + height >= bitmap.getHeight() ? bitmap.getHeight() -1 : y + height;
+		
+		renderRect(xStart, yStart, xEnd, yEnd, color);
+	}
 	
-			int yPix = i + y;
-			if (yPix < 0 || yPix >= bitmap.getHeight()) continue;
+	private void renderRect(int xStart, int yStart, int xEnd, int yEnd, int color) {
+		
+		for (int y = yStart; y <= yEnd; y ++) {
 			
-			for (int j = 0; j < width; j++) {
-				
-				int xPix = j + x;
-				if (xPix < 0 || xPix >= bitmap.getWidth()) continue;
-				
-				drawPixel(xPix, yPix, color);
+			for (int x = xStart; x <= xEnd; x++) {
+				drawPixel(x, y, color);
 			}
 			
 		}
@@ -52,7 +58,28 @@ public class Graphics {
 	}
 	
 	public void drawBitmap(int x, int y, Bitmap bitmap) {
-		drawBitmap(x, y, bitmap, TRANSPERANCY_LOW);
+		
+		int xStart = x;
+		int xStartImage = 0;
+		if (x < 0) {
+			xStart  = 0;
+			xStartImage -= x;
+		}
+		
+		int yStart = y;
+		int yStartImage = 0;
+		if (yStart < 0) {
+			yStart = 0;
+			yStartImage -= y;;
+		}
+		
+		int xEnd = x + bitmap.getWidth() >= this.bitmap.getWidth() ? this.getBitmap().getWidth() - 1 : x + bitmap.getWidth()-1;
+		System.out.println(xEnd - xStart);
+		int yEnd = y + bitmap.getHeight() >= this.bitmap.getHeight() ? this.getBitmap().getHeight() - 1 : y + bitmap.getHeight()-1;
+		
+		renderBitmapNoTransparancy(xStart, yStart, xEnd, yEnd, xStartImage, yStartImage, bitmap);
+		
+		//drawBitmap(x, y, bitmap, TRANSPERANCY_LOW);
 	}
 	
 	public void drawBitmap(int x, int y, Bitmap bitmap, int transperancy) {
@@ -98,6 +125,19 @@ public class Graphics {
 		}
 		
 	}
+
+	private void renderBitmapNoTransparancy(int xStart, int yStart, int xEnd, int yEnd, 
+											int xStartImage, int yStartImage,
+											Bitmap bitmap) {
+		for (int y = yStart, yImage = yStartImage; y <= yEnd; y ++, yImage++) {
+			
+			for (int x = xStart, xImage = xStartImage; x <= xEnd; x++, xImage++) {
+				drawPixel(x, y, bitmap.getPixel(xImage, yImage));
+			}
+			
+		}
+		
+	}
 	
 	private void drawBitmapLowTransparancy(int x, int y, Bitmap bitmap) {
 		for (int i = 0; i < bitmap.getHeight(); i ++) {
@@ -116,6 +156,18 @@ public class Graphics {
 				}
 
 			}
+			
+		}
+		
+	}
+	
+	public void drawString(int x, int y, Font font, String text) {
+		for (int i = 0; i < text.length(); i++) {
+			
+			Bitmap character = font.getChar((int)text.charAt(i));
+			drawBitmap(x, y, character);
+			
+			x += character.getWidth();
 			
 		}
 		
