@@ -1,6 +1,5 @@
-package com.zeta.engine.fonts;
+package com.engine.graphics;
 
-import com.zeta.engine.graphics.Bitmap;
 
 public class FontChar {
 

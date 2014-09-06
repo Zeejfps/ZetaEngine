@@ -1,11 +1,11 @@
-package com.zeta.engine.graphics;
+package com.engine.graphics;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
-import com.zeta.engine.Game;
+import com.engine.core.Game;
 
 public final class Window {
 
@@ -18,7 +18,7 @@ public final class Window {
 		frame = new JFrame(title);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
-		frame.add(game.getScreen().getCanvas());
+		frame.add(game.getCanvas());
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.addWindowListener(new WindowAdapter() {

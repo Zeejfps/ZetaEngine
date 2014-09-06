@@ -1,6 +1,6 @@
-package com.zeta.engine;
+package com.engine.core;
 
-import com.zeta.engine.graphics.Window;
+import com.engine.graphics.Window;
 
 public abstract class WindowedGame extends Game {
 

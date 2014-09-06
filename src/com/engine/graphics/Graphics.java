@@ -1,9 +1,6 @@
-package com.zeta.engine.graphics;
+package com.engine.graphics;
 
 import java.util.Arrays;
-
-import com.zeta.engine.fonts.Font;
-import com.zeta.engine.fonts.FontChar;
 
 public class Graphics {
 

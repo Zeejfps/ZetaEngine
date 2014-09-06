@@ -1,5 +1,6 @@
-package com.zeta.engine.fonts;
+package com.engine.graphics;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -11,8 +12,6 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-
-import com.zeta.engine.graphics.Bitmap;
 
 public class Font {
 	
@@ -41,16 +40,22 @@ public class Font {
 	public static Font createFont(String path) {
 		
 		Document xmlDoc = getDocument(path);
+		xmlDoc.normalize();
 		Element fontElement = xmlDoc.getDocumentElement();
 		
-		Node infoNode = null, commonNode = null, pagesNode = null, charsNode = null;
+		//Node infoNode = null; 
+		Node commonNode = null, pagesNode = null, charsNode = null;
 		
 		NodeList fontNodes = fontElement.getChildNodes();
 		for (int i = 0; i < fontNodes.getLength(); i++) {
 			
+			/*
 			if (fontNodes.item(i).getNodeName().equals("info")) {
 				infoNode = fontNodes.item(i);
-			} else if (fontNodes.item(i).getNodeName().equals("common")) {
+			} else 
+			//*/
+				
+			if (fontNodes.item(i).getNodeName().equals("common")) {
 				commonNode = fontNodes.item(i);
 			} else if (fontNodes.item(i).getNodeName().equals("pages")) {
 				pagesNode = fontNodes.item(i);
@@ -85,7 +90,11 @@ public class Font {
 						file += pageAttribs.item(j).getNodeValue();
 					}
 				}
-				pages[id] = Bitmap.load(file);
+				try {
+					pages[id] = Bitmap.load(file);
+				} catch (IOException e) {
+					System.err.println("Failed to load font file! \n" + file);
+				}
 			}
 			
 		}
