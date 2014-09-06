@@ -17,6 +17,8 @@ public class Player extends GameObject {
 	
 	private final Animation idle_up = Animation.load(1, new int[] {0}, SHEET);
 	private final Animation idle_left = Animation.load(1, new int[] {9}, SHEET);
+	private final Animation idle_down = Animation.load(1, new int[] {18}, SHEET);
+	private final Animation idle_right = Animation.load(1, new int[] {27}, SHEET);
 	private final Animation walk_up = Animation.load(9, new int[]{1, 2, 3, 4, 5, 6, 7, 8}, SHEET);
 	private final Animation walk_left = Animation.load(9, new int[]{10, 11, 12, 13, 14, 15, 16, 17}, SHEET);
 	private final Animation walk_down = Animation.load(9, new int[]{19, 20, 21, 22, 23, 24, 25, 26}, SHEET);
@@ -28,6 +30,8 @@ public class Player extends GameObject {
 	private Direction direction;
 	private boolean moving;
 	private int speed;
+	
+	private int xPrev = 0, yPrev = 0;
 	
 	private enum Direction {
 		
@@ -57,6 +61,14 @@ public class Player extends GameObject {
 		@Override
 		public void update() {
 			
+			if (getX() != xPrev || getY() != yPrev) {
+				moving = true;
+				xPrev = getX();
+				yPrev = getY();
+			} else {
+				moving = false;
+			}
+			
 			int x = 0;
 			int y = 0;
 			
@@ -79,19 +91,23 @@ public class Player extends GameObject {
 			switch (direction) {
 				
 			case NORTH:
-				animator.setAnimation(walk_up);
+				if (!moving) animator.setAnimation(idle_up);
+				else animator.setAnimation(walk_up);
 				break;
 				
 			case EAST:
-				animator.setAnimation(walk_right);
+				if (!moving) animator.setAnimation(idle_right);
+				else animator.setAnimation(walk_right);
 				break;
 				
 			case SOUTH:
-				animator.setAnimation(walk_down);
+				if (!moving) animator.setAnimation(idle_down);
+				else animator.setAnimation(walk_down);
 				break;
 				
 			case WEST:
-				animator.setAnimation(walk_left);
+				if (!moving) animator.setAnimation(idle_left);
+				else animator.setAnimation(walk_left);
 				break;
 			
 			}
