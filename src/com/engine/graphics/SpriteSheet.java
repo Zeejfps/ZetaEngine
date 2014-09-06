@@ -7,16 +7,16 @@ import java.net.URL;
 public class SpriteSheet {
 
 	private final Bitmap[] sprites;
-	private final int spritesPerRow;
-	private final int spritesPerCol;
-	private final int spriteWidth;
-	private final int spriteHeight;
+	private final int cellsPerRow;
+	private final int cellsPerCol;
+	private final int cellWidth;
+	private final int cellHeight;
 	
-	public SpriteSheet(int spritesPerRow, int spritesPerCol, int spriteWidth, int spriteHeight, Bitmap[] sprites) {
-		this.spritesPerRow = spritesPerRow;
-		this.spritesPerCol = spritesPerCol;
-		this.spriteWidth = spriteWidth;
-		this.spriteHeight = spriteHeight;
+	public SpriteSheet(int cellsPerRow, int cellsPerCol, int cellWidth, int cellHeight, Bitmap[] sprites) {
+		this.cellsPerRow = cellsPerRow;
+		this.cellsPerCol = cellsPerCol;
+		this.cellWidth = cellWidth;
+		this.cellHeight = cellHeight;
 		this.sprites = sprites;
 	}
 	
@@ -24,32 +24,36 @@ public class SpriteSheet {
 		return sprites;
 	}
 	
+	public Bitmap getSprite(int index) {
+		return sprites[index];
+	}
+	
 	public Bitmap getSprite(int x, int y) {
-		return sprites[y * spritesPerRow + x];
+		return getSprite(y*cellsPerRow + x);
 	}
 	
-	public int getSpritesPerRow() {
-		return spritesPerRow;
+	public int getCellsPerRow() {
+		return cellsPerRow;
 	}
 	
-	public int getSpritesPerCol() {
-		return spritesPerCol;
+	public int getCellsPerCol() {
+		return cellsPerCol;
 	}
 	
-	public int getSpriteWidth() {
-		return spriteWidth;
+	public int getCellWidth() {
+		return cellWidth;
 	}
 	
-	public int getSpriteHeight() {
-		return spriteHeight;
+	public int getCellHeight() {
+		return cellHeight;
 	}
 	
-	public static SpriteSheet load(int spritesPerRow, int spritesPerCol, int spriteWidth, int spriteHeight, String path) {
+	public static SpriteSheet load(int cellsPerRow, int cellsPerCol, int cellWidth, int cellHeight, String path) {
 		
 		try {
 			
 			Bitmap bitmap = Bitmap.load(path);
-			return load(spritesPerRow, spritesPerCol, spriteWidth, spriteHeight, bitmap);
+			return load(cellsPerRow, cellsPerCol, cellWidth, cellHeight, bitmap);
 			
 		} catch (IOException e) {
 			System.err.println("Failed to load SpriteSheet!\n" + path);
@@ -58,26 +62,26 @@ public class SpriteSheet {
 		return null;
 	}
 	
-	public static SpriteSheet load(int spritesPerRow, int spritesPerCol, int spriteWidth, int spriteHeight, URL path) {
+	public static SpriteSheet load(int cellsPerRow, int cellsPerCol, int cellWidth, int cellHeight, URL path) {
 		
 		try {
 			
 			Bitmap bitmap = Bitmap.load(path);
-			return load(spritesPerRow, spritesPerCol, spriteWidth, spriteHeight, bitmap);
+return load(cellsPerRow, cellsPerCol, cellWidth, cellHeight, bitmap);
 			
 		} catch (IOException e) {
-			System.err.println("Failed to load SpriteSheet!\n" + path.getPath());
+			System.err.println("Failed to load SpriteSheet!\n" + path);
 		}
 	
 		return null;
 	}
 	
-	public static SpriteSheet load(int spritesPerRow, int spritesPerCol, int spriteWidth, int spriteHeight, File file) {
+	public static SpriteSheet load(int cellsPerRow, int cellsPerCol, int cellWidth, int cellHeight, File file) {
 		
 		try {
 			
 			Bitmap bitmap = Bitmap.load(file);
-			return load(spritesPerRow, spritesPerCol, spriteWidth, spriteHeight, bitmap);
+			return load(cellsPerRow, cellsPerCol, cellWidth, cellHeight, bitmap);
 			
 		} catch (IOException e) {
 			System.err.println("Failed to load SpriteSheet!\n" + file.getAbsolutePath());
@@ -86,20 +90,20 @@ public class SpriteSheet {
 		return null;
 	}
 	
-	public static SpriteSheet load(int spritesPerRow, int spritesPerCol, int spriteWidth, int spriteHeight, Bitmap bitmap) {
+	public static SpriteSheet load(int cellsPerRow, int cellsPerCol, int cellWidth, int cellHeight, Bitmap bitmap) {
 		
-		Bitmap[] sprites = new Bitmap[spritesPerRow * spritesPerCol];
-		for (int i = 0; i < spritesPerCol; i++) {
+		Bitmap[] sprites = new Bitmap[cellsPerRow * cellsPerCol];
+		for (int i = 0; i < cellsPerCol; i++) {
 			
-			for (int j = 0; j < spritesPerRow; j++) {
+			for (int j = 0; j < cellsPerRow; j++) {
 				
-				sprites[i*spritesPerRow + j] = bitmap.subBitmap(j*spriteWidth, i*spriteHeight, spriteWidth, spriteHeight);
+				sprites[i*cellsPerRow + j] = bitmap.subBitmap(j*cellWidth, i*cellHeight, cellWidth, cellHeight);
 				
 			}
 			
 		}
 		
-		return new SpriteSheet(spritesPerRow, spritesPerCol, spriteWidth, spriteHeight, sprites);
+		return new SpriteSheet(cellsPerRow, cellsPerCol, cellWidth, cellHeight, sprites);
 		
 	}
 	

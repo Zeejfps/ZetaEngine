@@ -9,7 +9,7 @@ public class TestGame extends WindowedGame {
 	private Player player;
 	
 	public TestGame() {
-		super(640, 480, 2, "Test Game");
+		super(640, 480, 3, "Test Game");
 	
 		player = new Player();
 		sceneGraph.add(player);
@@ -23,7 +23,7 @@ public class TestGame extends WindowedGame {
 
 	@Override
 	protected void render(Graphics g) {
-		g.fill(0);
+		g.fill(0xffff00ff);
 	}
 
 }
