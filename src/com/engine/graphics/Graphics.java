@@ -126,7 +126,10 @@ public class Graphics {
 			
 			for (int x = xStart, xImage = xStartImage; x <= xEnd; x++, xImage++) {
 				int src = bitmap.getPixel(xImage, yImage);
-				if (src != 0) drawPixel(x, y, src);
+				if (src != 0xffff00ff) {
+					drawPixel(x, y, src);
+				}
+				
 			}
 			
 		}		

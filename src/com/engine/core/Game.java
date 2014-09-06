@@ -125,6 +125,7 @@ public abstract class Game {
 				previous = current;
 				lag += elapsed;
 				
+				Graphics g = screenBitmap.getGraphics();
 				while (lag >= nsPerUpdate) {
 					
 					update();
@@ -133,8 +134,8 @@ public abstract class Game {
 					lag -= nsPerUpdate;
 				}
 
-				render(screenBitmap.getGraphics());
-				sceneGraph.render(screenBitmap.getGraphics());
+				render(g);
+				sceneGraph.render(g);
 				swapBuffers();
 				frames++;
 				
