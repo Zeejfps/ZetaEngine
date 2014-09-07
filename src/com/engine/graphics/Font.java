@@ -38,7 +38,6 @@ public class Font {
 	}
 	
 	public static Font createFont(URL path) {
-		System.out.println(path.getPath());
 		Document xmlDoc = getDocument(path);
 		xmlDoc.normalize();
 		Element fontElement = xmlDoc.getDocumentElement();

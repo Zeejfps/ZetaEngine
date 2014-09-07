@@ -6,7 +6,6 @@ public class Graphics {
 
 	public static final int TRANSPERANCY_NONE = 0;
 	public static final int TRANSPERANCY_LOW = 1;
-	public static final int TRANSPERANCY_HIGH = 2;
 	
 	private final Bitmap bitmap;
 	private final int[] pixelData;
@@ -89,10 +88,6 @@ public class Graphics {
 		case TRANSPERANCY_LOW:
 			renderBitmapLowTransparancy(xStart, yStart, xEnd, yEnd, xStartImage, yStartImage, bitmap);
 			break;
-			
-		case TRANSPERANCY_HIGH:
-			renderBitmapLowTransparancy(xStart, yStart, xEnd, yEnd, xStartImage, yStartImage, bitmap);
-			break;
 		
 		default:
 			renderBitmapNoTransparancy(xStart, yStart, xEnd, yEnd, xStartImage, yStartImage, bitmap);
@@ -110,7 +105,7 @@ public class Graphics {
 			
 			for (int x = xStart, xImage = xStartImage; x <= xEnd; x++, xImage++) {
 				int src = bitmap.getPixel(xImage, yImage);
-				if (src == 0) src = 0xffffffff;
+				if (src == 0 || src == 0xff00ff) src = 0xffffffff;
 				drawPixel(x, y, src);
 			}
 			
@@ -126,7 +121,7 @@ public class Graphics {
 			
 			for (int x = xStart, xImage = xStartImage; x <= xEnd; x++, xImage++) {
 				int src = bitmap.getPixel(xImage, yImage);
-				if (src != 0xffff00ff) {
+				if (src != 0xffff00ff && src != 0) {
 					drawPixel(x, y, src);
 				}
 				
