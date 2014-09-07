@@ -1,5 +1,8 @@
 package snakegame.game;
 
+import java.awt.event.MouseEvent;
+
+import com.engine.core.Input;
 import com.engine.core.WindowedGame;
 import com.engine.graphics.Graphics;
 
@@ -13,11 +16,25 @@ public class TestGame extends WindowedGame {
 		player = new Player();
 		sceneGraph.add(player);
 		
+		x = Input.getMouseX();
+		y = Input.getMouseY();
+		
 	}
 
+	int x;
+	int y;
+	
 	@Override
 	protected void update() {
+		if (x != Input.getMouseX() || y != Input.getMouseY()) {
+			x = Input.getMouseX();
+			y = Input.getMouseY();
+			System.out.println("X: " + x + ", Y: " + y);
+		}
 		
+		if (Input.isMouseButtonDown(MouseEvent.BUTTON1)) {
+			System.out.println("clicked!");
+		}
 	}
 
 	@Override
