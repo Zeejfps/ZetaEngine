@@ -13,7 +13,7 @@ import com.engine.graphics.SpriteSheet;
 
 public class Player extends GameObject {
 
-	public static final SpriteSheet SHEET = SpriteSheet.load(9, 4, 64, 64, "res/sheet4.png");
+	public static final SpriteSheet SHEET = SpriteSheet.load(9, 4, 64, 64, Player.class.getResource("/sheet4.png"));
 	
 	private final Animation idle_up = Animation.load(1, new int[] {0}, SHEET);
 	private final Animation idle_left = Animation.load(1, new int[] {9}, SHEET);

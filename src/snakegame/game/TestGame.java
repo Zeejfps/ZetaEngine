@@ -5,7 +5,6 @@ import com.engine.graphics.Graphics;
 
 public class TestGame extends WindowedGame {
 
-
 	private Player player;
 	
 	public TestGame() {

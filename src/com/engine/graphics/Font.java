@@ -1,6 +1,7 @@
 package com.engine.graphics;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -11,12 +12,11 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 
 public class Font {
 	
-	public static final Font ARIAL = Font.createFont("res/fonts/Arial.fnt");
-	public static final Font ARIAL_BOLD = Font.createFont("res/fonts/ArialBold.fnt");
+	public static final Font ARIAL = Font.createFont(Font.class.getResource("/fonts/Arial.fnt"));
+	public static final Font ARIAL_BOLD = Font.createFont(Font.class.getResource("/fonts/ArialBold.fnt"));
 	
 	private ArrayList<FontChar> fontChars;
 	private int lineHeight;
@@ -37,8 +37,8 @@ public class Font {
 		return null;
 	}
 	
-	public static Font createFont(String path) {
-		
+	public static Font createFont(URL path) {
+		System.out.println(path.getPath());
 		Document xmlDoc = getDocument(path);
 		xmlDoc.normalize();
 		Element fontElement = xmlDoc.getDocumentElement();
@@ -81,7 +81,7 @@ public class Font {
 		for (int i = 0; i < pagesList.getLength(); i++) {
 			if (pagesList.item(i).getNodeName().equals("page")) {
 				int id = 0;
-				String file = "res/fonts/";
+				String file = "/fonts/";
 				NamedNodeMap pageAttribs = pagesList.item(i).getAttributes();
 				for (int j = 0; j < pageAttribs.getLength(); j++) {
 					if (pageAttribs.item(j).getNodeName().equals("id")) {
@@ -91,7 +91,7 @@ public class Font {
 					}
 				}
 				try {
-					pages[id] = Bitmap.load(file);
+					pages[id] = Bitmap.load(Font.class.getResource(file));
 				} catch (IOException e) {
 					System.err.println("Failed to load font file! \n" + file);
 				}
@@ -166,7 +166,7 @@ public class Font {
 		return new Font(lineHeight, 12, chars);
 	}
 	
-	private static Document getDocument(String path) {
+	private static Document getDocument(URL path) {
 		
 		try {
 			
@@ -175,8 +175,8 @@ public class Font {
 			factory.setIgnoringElementContentWhitespace(true);
 
 			DocumentBuilder builder = factory.newDocumentBuilder();
-			
-			return builder.parse(new InputSource(path));
+
+			return builder.parse(path.openStream());
 			
 		}
 		
