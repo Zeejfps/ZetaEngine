@@ -4,18 +4,16 @@ import java.util.ArrayList;
 
 import com.engine.core.components.Component;
 import com.engine.graphics.Graphics;
+import com.engine.utils.Transform;
+import com.engine.utils.Vector3;
 
 public class GameObject {
 	
-	private int x, y;
-	private float xRot, yRot;
-	private float xScale, yScale;
+	public final Transform transform;
 	private ArrayList<Component> components;
 	
 	public GameObject() {
-		x = 0; y = 0;
-		xRot = 0f; yRot = 0f;
-		xScale = 1f; yScale = 1f;
+		transform = new Transform(new Vector3(), 0);
 		components = new ArrayList<>();
 	}
 	
@@ -33,54 +31,6 @@ public class GameObject {
 	
 	public void addComponent(Component component) {
 		components.add(component);
-	}
-	
-	public void rotate(double x, double y) {
-		xRot += x; yRot += y;
-	}
-	
-	public void setRotX(float xRot) {
-		this.xRot = xRot;
-	}
-	
-	public void setRotY(float yRot) {
-		this.yRot = yRot;
-	}
-	
-	public void move(int dx, int dy) {
-		x += dx; y += dy;
-	}
-	
-	public void setX(int x) {
-		this.x = x;
-	}
-	
-	public void setY(int y) {
-		this.y = y;
-	}
-	
-	public float getScaleX() {
-		return xScale;
-	}
-	
-	public float getScaleY() {
-		return yScale;
-	}
-	
-	public float getRotX() {
-		return xRot;
-	}
-	
-	public float getRotY() {
-		return yRot;
-	}
-	
-	public int getX() {
-		return x;
-	}
-	
-	public int getY() {
-		return y;
 	}
 	
 }

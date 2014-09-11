@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 
@@ -18,7 +19,7 @@ public class Bitmap {
 		this.height = height;
 		this.pixelData = pixelData;
 		
-		graphics = new Graphics(this, pixelData);
+		graphics = new Graphics(this);
 	}
 	
 	public Bitmap(int width, int height) {
@@ -46,6 +47,18 @@ public class Bitmap {
 		return new Bitmap(width, height, pixels);
 	}
 	
+	public void setPixel(int x, int y, int color) {
+		setPixel(y*width + x, color);
+	}
+	
+	public void setPixel(int index, int color) {
+		pixelData[index] = color;
+	}
+	
+	public void fill(int color) {
+		Arrays.fill(pixelData, color);
+	}
+	
 	public int getPixel(int x, int y) {
 		return getPixel(y * width + x);
 	}
@@ -56,6 +69,10 @@ public class Bitmap {
 	
 	public Graphics getGraphics() {
 		return graphics;
+	}
+	
+	public int[] getPixelData() {
+		return pixelData;
 	}
 	
 	public int getWidth() {

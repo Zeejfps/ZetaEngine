@@ -15,7 +15,7 @@ public class SpriteRenderer extends Component {
 
 	@Override
 	public void render(Graphics g) {
-		g.drawBitmap(gameObject.getX(), gameObject.getY(), bitmap);
+		g.drawBitmap(bitmap, gameObject.transform);
 	}
 	
 	public void setBitmap(Bitmap bitmap) {

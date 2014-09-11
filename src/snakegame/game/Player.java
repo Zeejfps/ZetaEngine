@@ -10,6 +10,7 @@ import com.engine.core.components.SpriteRenderer;
 import com.engine.graphics.Animation;
 import com.engine.graphics.Bitmap;
 import com.engine.graphics.SpriteSheet;
+import com.engine.utils.Vector3;
 
 public class Player extends GameObject {
 
@@ -29,9 +30,9 @@ public class Player extends GameObject {
 	private Animator animator;
 	private Direction direction;
 	private boolean moving;
-	private int speed;
+	private float speed;
 	
-	private int xPrev = 0, yPrev = 0;
+	private float xPrev = 0, yPrev = 0;
 	
 	private enum Direction {
 		
@@ -41,7 +42,8 @@ public class Player extends GameObject {
 	
 	public Player() {
 		
-		speed = 1;
+		speed = 0.01f;
+		
 		direction = Direction.NORTH;
 		bitmap = SHEET.getSprite(28);
 		spriteRenderer = new SpriteRenderer(bitmap, this);
@@ -61,23 +63,26 @@ public class Player extends GameObject {
 		@Override
 		public void update() {
 			
-			if (getX() != xPrev || getY() != yPrev) {
+			if (transform.position.x() != xPrev || transform.position.y() != yPrev) {
 				moving = true;
-				xPrev = getX();
-				yPrev = getY();
+				xPrev = transform.position.x();
+				yPrev = transform.position.y();
 			} else {
 				moving = false;
 			}
 			
-			int x = 0;
-			int y = 0;
+			float x = 0;
+			float y = 0;
 			
 			if (Input.isKeyDown(KeyEvent.VK_W)) {
+				gameObject.transform.rotate(5);;
 				direction = Direction.NORTH;
-				y = -speed;
-			} else if (Input.isKeyDown(KeyEvent.VK_S)) {
-				direction = Direction.SOUTH;
 				y = speed;
+			} 
+			
+			else if (Input.isKeyDown(KeyEvent.VK_S)) {
+				direction = Direction.SOUTH;
+				y = -speed;
 			} 
 			
 			if (Input.isKeyDown(KeyEvent.VK_A)) {
@@ -112,7 +117,7 @@ public class Player extends GameObject {
 			
 			}
 			
-			gameObject.move(x, y);
+			gameObject.transform.translate(new Vector3(x, y, 0f));
 			
 		}
 		
