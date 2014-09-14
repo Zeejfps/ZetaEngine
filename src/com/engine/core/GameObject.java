@@ -13,7 +13,7 @@ public class GameObject {
 	private ArrayList<Component> components;
 	
 	public GameObject() {
-		transform = new Transform(new Vector3(), 0);
+		transform = new Transform(new Vector3(), new Vector3(0, 0.01f, 0), 0);
 		components = new ArrayList<>();
 	}
 	

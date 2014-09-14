@@ -96,6 +96,12 @@ class Vector <V extends Vector<V>> {
         div(mag);
 	}
 	
+	public void negate() {
+		for (int i = 0; i < components.length; i++) {
+			components[i] = -components[i];
+		}
+	}
+	
 	@Override
 	public V clone() {
 		try {
@@ -179,6 +185,13 @@ class Vector <V extends Vector<V>> {
 		result.div(value);
 		
 		return result;
+	}
+	
+	public static<V extends Vector<V>> V negative(V vec) {
+		V result = vec.clone();
+		result.negate();
+		return result;
+		
 	}
 	
 }

@@ -14,16 +14,16 @@ import com.engine.utils.Vector3;
 
 public class Player extends GameObject {
 
-	public static final SpriteSheet SHEET = SpriteSheet.load(9, 4, 64, 64, Player.class.getResource("/sheet4.png"));
+	public static final SpriteSheet SHEET = SpriteSheet.load(7, 4, 35, 35, Player.class.getResource("/SpiderSpriteSheet.png"));
 	
-	private final Animation idle_up = Animation.load(1, new int[] {0}, SHEET);
-	private final Animation idle_left = Animation.load(1, new int[] {9}, SHEET);
-	private final Animation idle_down = Animation.load(1, new int[] {18}, SHEET);
-	private final Animation idle_right = Animation.load(1, new int[] {27}, SHEET);
-	private final Animation walk_up = Animation.load(9, new int[]{1, 2, 3, 4, 5, 6, 7, 8}, SHEET);
-	private final Animation walk_left = Animation.load(9, new int[]{10, 11, 12, 13, 14, 15, 16, 17}, SHEET);
-	private final Animation walk_down = Animation.load(9, new int[]{19, 20, 21, 22, 23, 24, 25, 26}, SHEET);
-	private final Animation walk_right = Animation.load(9, new int[]{28, 29, 30, 31, 32, 33, 34, 35}, SHEET);
+	private final Animation idle_up = Animation.load(1, new int[] {14}, SHEET);
+	private final Animation idle_left = Animation.load(1, new int[] {7}, SHEET);
+	private final Animation idle_down = Animation.load(1, new int[] {0}, SHEET);
+	private final Animation idle_right = Animation.load(1, new int[] {21}, SHEET);
+	private final Animation walk_down = Animation.load(11, new int[]{1, 2, 3, 4, 5, 6}, SHEET);
+	private final Animation walk_left = Animation.load(11, new int[]{8, 9, 10, 11, 12, 13}, SHEET);
+	private final Animation walk_up = Animation.load(11, new int[]{15, 16, 17, 18}, SHEET);
+	private final Animation walk_right = Animation.load(11, new int[]{22, 23, 24, 25, 26, 27}, SHEET);
 	
 	private Bitmap bitmap;
 	private SpriteRenderer spriteRenderer;
@@ -45,7 +45,7 @@ public class Player extends GameObject {
 		speed = 0.01f;
 		
 		direction = Direction.NORTH;
-		bitmap = SHEET.getSprite(28);
+		bitmap = SHEET.getSprite(14);
 		spriteRenderer = new SpriteRenderer(bitmap, this);
 		animator = new Animator(spriteRenderer, idle_up, this);
 		addComponent(spriteRenderer);
@@ -71,27 +71,25 @@ public class Player extends GameObject {
 				moving = false;
 			}
 			
-			float x = 0;
-			float y = 0;
-			
 			if (Input.isKeyDown(KeyEvent.VK_W)) {
-				gameObject.transform.rotate(5);;
-				direction = Direction.NORTH;
-				y = speed;
+				//direction = Direction.NORTH;
+				gameObject.transform.translate(gameObject.transform.forward);
 			} 
-			
+
 			else if (Input.isKeyDown(KeyEvent.VK_S)) {
-				direction = Direction.SOUTH;
-				y = -speed;
+				//direction = Direction.SOUTH;
+				Vector3 back = Vector3.negative(gameObject.transform.forward);
+				gameObject.transform.translate(back);
 			} 
 			
 			if (Input.isKeyDown(KeyEvent.VK_A)) {
-				direction = Direction.WEST;
-				x = -speed;
+				//direction = Direction.WEST;
+				gameObject.transform.rotate(5);
 			} else if (Input.isKeyDown(KeyEvent.VK_D)) {
-				direction = Direction.EAST;
-				x = speed;
+				//direction = Direction.EAST;
+				gameObject.transform.rotate(-5);
 			}
+			
 			
 			switch (direction) {
 				
@@ -116,8 +114,6 @@ public class Player extends GameObject {
 				break;
 			
 			}
-			
-			gameObject.transform.translate(new Vector3(x, y, 0f));
 			
 		}
 		

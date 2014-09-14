@@ -1,5 +1,6 @@
 package com.engine.graphics;
 
+import com.engine.graphics.BitmapFont.Glyph;
 import com.engine.utils.Transform;
 
 public class Graphics {
@@ -8,11 +9,11 @@ public class Graphics {
 	public static final int TRANSPERANCY_LOW = 1;
 	
 	private final Bitmap bitmap;
-	private Font font;
+	private BitmapFont font;
 	
 	public Graphics(Bitmap bitmap) {
 		this.bitmap = bitmap;
-		font = Font.ARIAL;
+		font = BitmapFont.ARIAL;
 	}
 	
 	public Bitmap getBitmap() {
@@ -27,7 +28,7 @@ public class Graphics {
 		bitmap.setPixel(x, y, color);
 	}
 	
-	public void setFont(Font font) {
+	public void setFont(BitmapFont font) {
 		this.font = font;
 	}
 	
@@ -213,7 +214,7 @@ public class Graphics {
 				
 			} else {
 			
-				FontChar fontChar = font.getChar((int)text.charAt(i));
+				Glyph fontChar = font.getChar((int)text.charAt(i));
 				int xRender = xCursor + fontChar.xOffset;
 				int yRender = yCursor + fontChar.yOffset;
 				renderChar(xRender, yRender, color, fontChar.bitmap);

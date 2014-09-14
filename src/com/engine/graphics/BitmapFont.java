@@ -13,15 +13,15 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class Font {
+public class BitmapFont {
 	
-	public static final Font ARIAL = Font.createFont(Font.class.getResource("/fonts/Arial.fnt"));
-	public static final Font ARIAL_BOLD = Font.createFont(Font.class.getResource("/fonts/ArialBold.fnt"));
+	public static final BitmapFont ARIAL = BitmapFont.createFont(BitmapFont.class.getResource("/fonts/Arial.fnt"));
+	public static final BitmapFont ARIAL_BOLD = BitmapFont.createFont(BitmapFont.class.getResource("/fonts/ArialBold.fnt"));
 	
-	private ArrayList<FontChar> fontChars;
+	private ArrayList<Glyph> fontChars;
 	private int lineHeight;
 	
-	private Font(int lineHeight, int spacing, ArrayList<FontChar> fontChars) {
+	private BitmapFont(int lineHeight, int spacing, ArrayList<Glyph> fontChars) {
 		this.lineHeight = lineHeight; 
 		this.fontChars = fontChars;
 	}
@@ -30,14 +30,31 @@ public class Font {
 		return lineHeight;
 	}
 	
-	public FontChar getChar(int id) {
-		for (FontChar fontChar : fontChars) {
+	public Glyph getChar(int id) {
+		for (Glyph fontChar : fontChars) {
 			if (fontChar.id == id) return fontChar;
 		}
 		return null;
 	}
 	
-	public static Font createFont(URL path) {
+	private static Glyph createGlyph(int id, int xOffset, int yOffset, int xAdvance, int x, int y, int width, int height, Bitmap page) {
+		
+		int[] pixelData = new int[width * height];
+		for (int i = 0; i < height; i++) {
+			
+			for (int j = 0; j < width; j++) {
+				
+				pixelData[i*width + j] = page.getPixel(x+j, y+i);
+				
+			}
+			
+		}
+		
+		Bitmap bitmap = new Bitmap(width, height, pixelData);
+		return new Glyph(id, xOffset, yOffset, xAdvance, bitmap);
+	}
+	
+	public static BitmapFont createFont(URL path) {
 		Document xmlDoc = getDocument(path);
 		xmlDoc.normalize();
 		Element fontElement = xmlDoc.getDocumentElement();
@@ -90,7 +107,7 @@ public class Font {
 					}
 				}
 				try {
-					pages[id] = Bitmap.load(Font.class.getResource(file));
+					pages[id] = Bitmap.load(BitmapFont.class.getResource(file));
 				} catch (IOException e) {
 					System.err.println("Failed to load font file! \n" + file);
 				}
@@ -98,7 +115,7 @@ public class Font {
 			
 		}
 		
-		ArrayList<FontChar> chars = new ArrayList<>();
+		ArrayList<Glyph> chars = new ArrayList<>();
 		
 		NodeList charsList = charsNode.getChildNodes();
 		for (int i = 0; i < charsList.getLength(); i++) {
@@ -155,14 +172,14 @@ public class Font {
 					
 				}
 				
-				FontChar fontChar = FontChar.create(id, xOffset, yOffset, xAdvance, x, y, width, height, pages[page]);
+				Glyph fontChar = createGlyph(id, xOffset, yOffset, xAdvance, x, y, width, height, pages[page]);
 				chars.add(fontChar);
 				
 			}
 			
 		}
 		
-		return new Font(lineHeight, 12, chars);
+		return new BitmapFont(lineHeight, 12, chars);
 	}
 	
 	private static Document getDocument(URL path) {
@@ -184,6 +201,26 @@ public class Font {
 		}
 		
 		return null;
+		
+	}
+	
+	static class Glyph {
+
+		public final int id;
+		public final int xOffset;
+		public final int yOffset;
+		public final int xAdvance;
+		public final Bitmap bitmap;
+		
+		private Glyph(int id, int xOffset, int yOffset, int xAdvance, Bitmap bitmap) {
+			
+			this.id = id;
+			this.xOffset = xOffset;
+			this.yOffset = yOffset;
+			this.xAdvance = xAdvance;
+			this.bitmap = bitmap;
+			
+		}
 		
 	}
 	
